@@ -1,4 +1,4 @@
-```javascript
+
 const rankingCSV =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vQr3ZihchC7_623tqInuQIXkb8EFrt_rweBnvk34nyrFhvILVYUJBAuXxOReXiPaqONa45zhlqVo7WV/pub?gid=1385809585&single=true&output=csv";
 
@@ -57,4 +57,3 @@ loadCSV(rankingCSV,"ranking-content");
 loadCSV(typyCSV,"typy-content");
 loadCSV(aiCSV,"ai-content");
 },60000);
-```
