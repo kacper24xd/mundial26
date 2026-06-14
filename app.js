@@ -7,15 +7,16 @@ const typyCSV =
 const aiCSV =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vQr3ZihchC7_623tqInuQIXkb8EFrt_rweBnvk34nyrFhvILVYUJBAuXxOReXiPaqONa45zhlqVo7WV/pub?gid=930565797&single=true&output=csv";
 
-function showTab(tab) {
-    document.querySelectorAll(".tab").forEach(t => {
-        t.classList.add("hidden");
-    });
+function showTab(tab){
+    document.querySelectorAll(".tab")
+        .forEach(t => t.classList.add("hidden"));
 
-    document.getElementById(tab).classList.remove("hidden");
+    document.getElementById(tab)
+        .classList.remove("hidden");
 }
 
-async function getCSV(url) {
+async function getCSV(url){
+
     const response = await fetch(url);
     const text = await response.text();
 
@@ -26,33 +27,45 @@ async function getCSV(url) {
         .map(r => r.split(","));
 }
 
-async function loadRanking() {
+function cleanRow(row){
+    return row.filter(cell => cell.trim() !== "");
+}
+
+async function loadRanking(){
 
     const rows = await getCSV(rankingCSV);
 
-    const data = rows.slice(1);
+    const headerIndex = rows.findIndex(r =>
+        r.includes("Miejsce") &&
+        r.includes("Gracz")
+    );
+
+    if(headerIndex === -1) return;
+
+    const data = rows
+        .slice(headerIndex + 1)
+        .map(cleanRow)
+        .filter(r => r.length >= 4);
 
     let podium = "";
 
-    if (data.length >= 3) {
+    if(data.length >= 3){
+
         podium = `
         <div class="podium">
 
             <div class="podium-card silver">
-                <div class="place">🥈 2 miejsce</div>
-                <h3>${data[1][1]}</h3>
+                <h3>🥈 ${data[1][1]}</h3>
                 <p>${data[1][2]} pkt</p>
             </div>
 
             <div class="podium-card gold">
-                <div class="place">🥇 Lider</div>
-                <h3>${data[0][1]}</h3>
+                <h3>🥇 ${data[0][1]}</h3>
                 <p>${data[0][2]} pkt</p>
             </div>
 
             <div class="podium-card bronze">
-                <div class="place">🥉 3 miejsce</div>
-                <h3>${data[2][1]}</h3>
+                <h3>🥉 ${data[2][1]}</h3>
                 <p>${data[2][2]} pkt</p>
             </div>
 
@@ -62,106 +75,57 @@ async function loadRanking() {
 
     let table = `
     <table>
-        <thead>
-            <tr>
-                <th>Miejsce</th>
-                <th>Gracz</th>
-                <th>Punkty</th>
-                <th>Koszt</th>
-            </tr>
-        </thead>
-        <tbody>
+    <thead>
+    <tr>
+        <th>Miejsce</th>
+        <th>Gracz</th>
+        <th>Punkty</th>
+        <th>Koszt</th>
+    </tr>
+    </thead>
+    <tbody>
     `;
 
-    data.forEach(row => {
-
-        if (!row[1]) return;
+    data.forEach(r => {
 
         table += `
         <tr>
-            <td>${row[0] || ""}</td>
-            <td>${row[1] || ""}</td>
-            <td>${row[2] || ""}</td>
-            <td>${row[3] || ""}</td>
+            <td>${r[0]}</td>
+            <td>${r[1]}</td>
+            <td>${r[2]}</td>
+            <td>${r[3]}</td>
         </tr>
         `;
     });
 
-    table += `
-        </tbody>
-    </table>
-    `;
+    table += "</tbody></table>";
 
     document.getElementById("ranking-content").innerHTML =
         podium + table;
 }
 
-async function loadTypy() {
+async function loadTypy(){
 
     const rows = await getCSV(typyCSV);
 
-    const data = rows.slice(1);
-
-    let html = `<div class="cards">`;
-
-    data.forEach(row => {
-
-        if (!row[0]) return;
-
-        html += `
-        <div class="player-card">
-
-            <h3>${row[0]}</h3>
-
-            <div class="team-list">
-                <div class="team">${row[1] || ""}</div>
-                <div class="team">${row[2] || ""}</div>
-                <div class="team">${row[3] || ""}</div>
-                <div class="team">${row[4] || ""}</div>
-                <div class="team">${row[5] || ""}</div>
-                <div class="team">${row[6] || ""}</div>
-                <div class="team">${row[7] || ""}</div>
-                <div class="team">${row[8] || ""}</div>
-            </div>
-
-            <br>
-
-            <p><b>Koszt:</b> ${row[9] || ""}</p>
-            <p><b>Punkty:</b> ${row[10] || ""}</p>
-
-        </div>
-        `;
-    });
-
-    html += "</div>";
+    let html = `
+    <p style="text-align:center">
+    Sprawdzanie danych Typy...
+    </p>
+    `;
 
     document.getElementById("typy-content").innerHTML = html;
 }
 
-async function loadAI() {
+async function loadAI(){
 
     const rows = await getCSV(aiCSV);
 
-    let html = `<table>`;
-
-    rows.forEach((row, index) => {
-
-        html += "<tr>";
-
-        row.forEach(col => {
-
-            if (index === 0) {
-                html += `<th>${col}</th>`;
-            } else {
-                html += `<td>${col}</td>`;
-            }
-
-        });
-
-        html += "</tr>";
-    });
-
-    html += "</table>";
+    let html = `
+    <p style="text-align:center">
+    Sprawdzanie danych AI...
+    </p>
+    `;
 
     document.getElementById("ai-content").innerHTML = html;
 }
@@ -172,6 +136,4 @@ loadAI();
 
 setInterval(() => {
     loadRanking();
-    loadTypy();
-    loadAI();
-}, 60000);
+},60000);
