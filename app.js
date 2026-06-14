@@ -111,7 +111,12 @@ async function loadTypy(){
     const data = rows
         .slice(1)
         .map(cleanRow)
-        .filter(r => r.length >= 11);
+        .filter(r => r.length >= 11)
+        .filter(r =>
+            r[0] &&
+            r[0] !== "Gracz" &&
+            !r[0].includes("Zespół")
+        );
 
     let html = '<div class="cards">';
 
@@ -123,20 +128,20 @@ async function loadTypy(){
             <h3>${r[0]}</h3>
 
             <div class="team-list">
-                <div class="team">${r[1]}</div>
-                <div class="team">${r[2]}</div>
-                <div class="team">${r[3]}</div>
-                <div class="team">${r[4]}</div>
-                <div class="team">${r[5]}</div>
-                <div class="team">${r[6]}</div>
-                <div class="team">${r[7]}</div>
-                <div class="team">${r[8]}</div>
+                <div class="team">${r[1] || ""}</div>
+                <div class="team">${r[2] || ""}</div>
+                <div class="team">${r[3] || ""}</div>
+                <div class="team">${r[4] || ""}</div>
+                <div class="team">${r[5] || ""}</div>
+                <div class="team">${r[6] || ""}</div>
+                <div class="team">${r[7] || ""}</div>
+                <div class="team">${r[8] || ""}</div>
             </div>
 
-            <br>
-
-            <p><b>Koszt:</b> ${r[9]}</p>
-            <p><b>Punkty:</b> ${r[10]}</p>
+            <div style="margin-top:15px">
+                <p><b>Koszt:</b> ${r[9] || ""}</p>
+                <p><b>Punkty:</b> ${r[10] || ""}</p>
+            </div>
 
         </div>
         `;
