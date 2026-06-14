@@ -7,144 +7,171 @@ const typyCSV =
 const aiCSV =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vQr3ZihchC7_623tqInuQIXkb8EFrt_rweBnvk34nyrFhvILVYUJBAuXxOReXiPaqONa45zhlqVo7WV/pub?gid=930565797&single=true&output=csv";
 
-function showTab(tab){
-    document.querySelectorAll(".tab")
-    .forEach(t => t.classList.add("hidden"));
+function showTab(tab) {
+    document.querySelectorAll(".tab").forEach(t => {
+        t.classList.add("hidden");
+    });
 
-    document.getElementById(tab)
-    .classList.remove("hidden");
+    document.getElementById(tab).classList.remove("hidden");
 }
 
-async function loadRanking(){
-
-    const response = await fetch(rankingCSV);
+async function getCSV(url) {
+    const response = await fetch(url);
     const text = await response.text();
 
-    const rows = text
-        .trim()
+    return text
         .split("\n")
-        .slice(1)
-        .filter(r => r.trim() !== "")
+        .map(r => r.trim())
+        .filter(r => r.length > 0)
         .map(r => r.split(","));
+}
 
-    let podium = `
-    <div class="podium">
-        <div class="silver">
-            🥈<br>${rows[1][1]}<br>${rows[1][2]} pkt
-        </div>
+async function loadRanking() {
 
-        <div class="gold">
-            🥇<br>${rows[0][1]}<br>${rows[0][2]} pkt
-        </div>
+    const rows = await getCSV(rankingCSV);
 
-        <div class="bronze">
-            🥉<br>${rows[2][1]}<br>${rows[2][2]} pkt
+    const data = rows.slice(1);
+
+    let podium = "";
+
+    if (data.length >= 3) {
+        podium = `
+        <div class="podium">
+
+            <div class="podium-card silver">
+                <div class="place">🥈 2 miejsce</div>
+                <h3>${data[1][1]}</h3>
+                <p>${data[1][2]} pkt</p>
+            </div>
+
+            <div class="podium-card gold">
+                <div class="place">🥇 Lider</div>
+                <h3>${data[0][1]}</h3>
+                <p>${data[0][2]} pkt</p>
+            </div>
+
+            <div class="podium-card bronze">
+                <div class="place">🥉 3 miejsce</div>
+                <h3>${data[2][1]}</h3>
+                <p>${data[2][2]} pkt</p>
+            </div>
+
         </div>
-    </div>
-    `;
+        `;
+    }
 
     let table = `
     <table>
-    <tr>
-        <th>Miejsce</th>
-        <th>Gracz</th>
-        <th>Punkty</th>
-        <th>Koszt</th>
-    </tr>
+        <thead>
+            <tr>
+                <th>Miejsce</th>
+                <th>Gracz</th>
+                <th>Punkty</th>
+                <th>Koszt</th>
+            </tr>
+        </thead>
+        <tbody>
     `;
 
-    rows.forEach(r=>{
+    data.forEach(row => {
+
+        if (!row[1]) return;
+
         table += `
         <tr>
-            <td>${r[0]}</td>
-            <td>${r[1]}</td>
-            <td>${r[2]}</td>
-            <td>${r[3]}</td>
+            <td>${row[0] || ""}</td>
+            <td>${row[1] || ""}</td>
+            <td>${row[2] || ""}</td>
+            <td>${row[3] || ""}</td>
         </tr>
         `;
     });
 
-    table += "</table>";
-
-    document.getElementById("ranking-content")
-    .innerHTML = podium + table;
-}
-
-async function loadTypy(){
-
-    const response = await fetch(typyCSV);
-    const text = await response.text();
-
-    const rows = text
-        .trim()
-        .split("\n")
-        .slice(1)
-        .filter(r => r.trim() !== "")
-        .map(r => r.split(","));
-
-    let html = '<div class="cards">';
-
-    rows.forEach(r=>{
-
-        html += `
-        <div class="card">
-            <h3>${r[0]}</h3>
-
-            <p>${r[1]}</p>
-            <p>${r[2]}</p>
-            <p>${r[3]}</p>
-            <p>${r[4]}</p>
-            <p>${r[5]}</p>
-            <p>${r[6]}</p>
-            <p>${r[7]}</p>
-            <p>${r[8]}</p>
-
-            <hr>
-
-            <p><b>Koszt:</b> ${r[9]}</p>
-            <p><b>Punkty:</b> ${r[10]}</p>
-        </div>
-        `;
-    });
-
-    html += '</div>';
-
-    document.getElementById("typy-content")
-    .innerHTML = html;
-}
-
-async function loadAI(){
-
-    const response = await fetch(aiCSV);
-    const text = await response.text();
-
-    const rows = text.trim().split("\n");
-
-    let html = `
-    <div class="ai-box">
+    table += `
+        </tbody>
+    </table>
     `;
 
-    rows.forEach(row=>{
+    document.getElementById("ranking-content").innerHTML =
+        podium + table;
+}
+
+async function loadTypy() {
+
+    const rows = await getCSV(typyCSV);
+
+    const data = rows.slice(1);
+
+    let html = `<div class="cards">`;
+
+    data.forEach(row => {
+
+        if (!row[0]) return;
 
         html += `
-        <div class="ai-row">
-            ${row}
+        <div class="player-card">
+
+            <h3>${row[0]}</h3>
+
+            <div class="team-list">
+                <div class="team">${row[1] || ""}</div>
+                <div class="team">${row[2] || ""}</div>
+                <div class="team">${row[3] || ""}</div>
+                <div class="team">${row[4] || ""}</div>
+                <div class="team">${row[5] || ""}</div>
+                <div class="team">${row[6] || ""}</div>
+                <div class="team">${row[7] || ""}</div>
+                <div class="team">${row[8] || ""}</div>
+            </div>
+
+            <br>
+
+            <p><b>Koszt:</b> ${row[9] || ""}</p>
+            <p><b>Punkty:</b> ${row[10] || ""}</p>
+
         </div>
         `;
     });
 
     html += "</div>";
 
-    document.getElementById("ai-content")
-    .innerHTML = html;
+    document.getElementById("typy-content").innerHTML = html;
+}
+
+async function loadAI() {
+
+    const rows = await getCSV(aiCSV);
+
+    let html = `<table>`;
+
+    rows.forEach((row, index) => {
+
+        html += "<tr>";
+
+        row.forEach(col => {
+
+            if (index === 0) {
+                html += `<th>${col}</th>`;
+            } else {
+                html += `<td>${col}</td>`;
+            }
+
+        });
+
+        html += "</tr>";
+    });
+
+    html += "</table>";
+
+    document.getElementById("ai-content").innerHTML = html;
 }
 
 loadRanking();
 loadTypy();
 loadAI();
 
-setInterval(()=>{
+setInterval(() => {
     loadRanking();
     loadTypy();
     loadAI();
-},60000);
+}, 60000);
