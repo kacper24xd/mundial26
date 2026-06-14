@@ -108,11 +108,41 @@ async function loadTypy(){
 
     const rows = await getCSV(typyCSV);
 
-    let html = `
-    <p style="text-align:center">
-    Sprawdzanie danych Typy...
-    </p>
-    `;
+    const data = rows
+        .slice(1)
+        .map(cleanRow)
+        .filter(r => r.length >= 11);
+
+    let html = '<div class="cards">';
+
+    data.forEach(r => {
+
+        html += `
+        <div class="player-card">
+
+            <h3>${r[0]}</h3>
+
+            <div class="team-list">
+                <div class="team">${r[1]}</div>
+                <div class="team">${r[2]}</div>
+                <div class="team">${r[3]}</div>
+                <div class="team">${r[4]}</div>
+                <div class="team">${r[5]}</div>
+                <div class="team">${r[6]}</div>
+                <div class="team">${r[7]}</div>
+                <div class="team">${r[8]}</div>
+            </div>
+
+            <br>
+
+            <p><b>Koszt:</b> ${r[9]}</p>
+            <p><b>Punkty:</b> ${r[10]}</p>
+
+        </div>
+        `;
+    });
+
+    html += "</div>";
 
     document.getElementById("typy-content").innerHTML = html;
 }
@@ -121,10 +151,35 @@ async function loadAI(){
 
     const rows = await getCSV(aiCSV);
 
+    const data = rows
+        .map(cleanRow)
+        .filter(r => r.length > 0);
+
     let html = `
-    <p style="text-align:center">
-    Sprawdzanie danych AI...
-    </p>
+    <table>
+    <tbody>
+    `;
+
+    data.forEach((row,index)=>{
+
+        html += "<tr>";
+
+        row.forEach(col=>{
+
+            if(index === 0){
+                html += `<th>${col}</th>`;
+            }else{
+                html += `<td>${col}</td>`;
+            }
+
+        });
+
+        html += "</tr>";
+    });
+
+    html += `
+    </tbody>
+    </table>
     `;
 
     document.getElementById("ai-content").innerHTML = html;
@@ -136,4 +191,6 @@ loadAI();
 
 setInterval(() => {
     loadRanking();
-},60000);
+    loadTypy();
+    loadAI();
+}, 60000);
