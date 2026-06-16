@@ -215,7 +215,7 @@ async function loadAI(){
     `;
 
     // podsumowanie zaczyna się w wierszu 29
-    for(let row = 29; row <= 35; row++){
+    for(let row = 30; row <= 36; row++){
 
         const player = rows[row]?.[15]?.trim();
 
@@ -233,11 +233,11 @@ const chance =
     chance
 ){
 
-            let medal = "";
+           let medal = "";
 
-            if(row === 29) medal = "🥇";
-            if(row === 30) medal = "🥈";
-            if(row === 31) medal = "🥉";
+if(row === 30) medal = "🥇";
+if(row === 31) medal = "🥈";
+if(row === 32) medal = "🥉";
 
             html += `
             <li style="
