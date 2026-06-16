@@ -157,39 +157,40 @@ async function loadAI(){
     const rows = await getCSV(aiCSV);
 
     const models = [
-        "Chat GPT",
-        "Copilot",
-        "Gemini",
-        "Use AI",
-        "Claude Opus",
-        "Perplexity"
+        { name: "Chat GPT", playerCol: 2, chanceCol: 3 },
+        { name: "Copilot", playerCol: 7, chanceCol: 8 },
+        { name: "Gemini", playerCol: 12, chanceCol: 13 },
+        { name: "Use AI", playerCol: 17, chanceCol: 18 },
+        { name: "Claude Opus", playerCol: 22, chanceCol: 23 },
+        { name: "Perplexity", playerCol: 27, chanceCol: 28 }
     ];
 
     let html = `
-<div class="ai-info">
-    📋 Wszystkie prognozy AI zostały wygenerowane i zapisane przed rozpoczęciem
-    Mistrzostw Świata FIFA 2026. Żaden model nie znał wyników meczów ani przebiegu turnieju.
-    Prezentowane wartości są wyłącznie przedturniejowymi przewidywaniami poszczególnych modeli AI.
-</div>
+    <div class="ai-info">
+        📋 Wszystkie prognozy AI zostały wygenerowane i zapisane przed rozpoczęciem
+        Mistrzostw Świata FIFA 2026. Żaden model nie znał wyników meczów ani przebiegu turnieju.
+        Prezentowane wartości są wyłącznie przedturniejowymi przewidywaniami poszczególnych modeli AI.
+    </div>
 
-<div class="ai-grid">
-`;
+    <div class="ai-grid">
+    `;
 
-    models.forEach((model,index)=>{
-
-        const playerCol = index * 2;
-        const chanceCol = playerCol + 1;
+    models.forEach(model => {
 
         html += `
         <div class="ai-card">
-            <h3>🤖 ${model}</h3>
+            <h3>🤖 ${model.name}</h3>
             <ul>
         `;
 
-        for(let row=4; row<=10; row++){
+        // dane są w wierszach 5-11 csv
+        for(let row = 5; row <= 11; row++){
 
-            const player = rows[row]?.[playerCol]?.trim();
-            const chance = rows[row]?.[chanceCol]?.trim();
+            const player =
+                rows[row]?.[model.playerCol]?.trim();
+
+            const chance =
+                rows[row]?.[model.chanceCol]?.trim();
 
             if(player && chance){
 
@@ -205,35 +206,38 @@ async function loadAI(){
         `;
     });
 
-    html += '</div>';
-
-    // PODSUMOWANIE
-
     html += `
+    </div>
+
     <div class="ai-summary">
         <h3>📊 Podsumowanie AI</h3>
         <ul style="list-style:none;padding:0">
     `;
 
-    const summaryRows = rows.slice(29,36);
+    // podsumowanie zaczyna się w wierszu 29
+    for(let row = 29; row <= 35; row++){
 
-    summaryRows.forEach(row=>{
-
-        const player = row[0]?.trim();
-        const chance = row[1]?.trim();
+        const player = rows[row]?.[15]?.trim();
+        const chance = rows[row]?.[16]?.trim();
 
         if(player && chance){
 
+            let medal = "";
+
+            if(row === 29) medal = "🥇";
+            if(row === 30) medal = "🥈";
+            if(row === 31) medal = "🥉";
+
             html += `
             <li style="
-                padding:8px 0;
+                padding:10px 0;
                 border-bottom:1px solid #24324a;
             ">
-                ${player} - <b>${chance}</b>
+                ${medal} ${player} - <b>${chance}</b>
             </li>
             `;
         }
-    });
+    }
 
     html += `
         </ul>
