@@ -194,30 +194,6 @@ tr:hover td{
     background:#2b4b77;
 }
 
-/* AI */
-
-.ai-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:25px;
-}
-
-.ai-card{
-    background:#152238;
-    padding:25px;
-    border-radius:18px;
-    box-shadow:0 10px 20px rgba(0,0,0,.3);
-}
-
-.ai-card h3{
-    color:#f4c542;
-    margin-bottom:15px;
-    text-align:center;
-}
-
-.ai-card table{
-    box-shadow:none;
-}
 
 /* TOP 3 */
 
@@ -302,4 +278,38 @@ tr:hover td{
     .tab h2{
         font-size:1.6rem;
     }
+}
+.ai-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.ai-card{
+    background:#152238;
+    border-radius:15px;
+    padding:20px;
+    border:1px solid #24324a;
+}
+
+.ai-card h3{
+    color:#f4c542;
+    margin-bottom:15px;
+}
+
+.ai-card ul{
+    list-style:none;
+    padding:0;
+}
+
+.ai-card li{
+    padding:8px 0;
+    border-bottom:1px solid #24324a;
+}
+
+.ai-summary{
+    margin-top:30px;
+    background:#152238;
+    padding:20px;
+    border-radius:15px;
 }
