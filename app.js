@@ -165,7 +165,15 @@ async function loadAI(){
         "Perplexity"
     ];
 
-    let html = '<div class="ai-grid">';
+    let html = `
+<div class="ai-info">
+    📋 Wszystkie prognozy AI zostały wygenerowane i zapisane przed rozpoczęciem
+    Mistrzostw Świata FIFA 2026. Żaden model nie znał wyników meczów ani przebiegu turnieju.
+    Prezentowane wartości są wyłącznie przedturniejowymi przewidywaniami poszczególnych modeli AI.
+</div>
+
+<div class="ai-grid">
+`;
 
     models.forEach((model,index)=>{
 
