@@ -215,7 +215,7 @@ async function loadAI(){
     `;
 
     // podsumowanie zaczyna się w wierszu 29
-    for(let row = 30; row <= 36; row++){
+    for(let row = 29; row <= 36; row++)
 
         const player = rows[row]?.[15]?.trim();
 
