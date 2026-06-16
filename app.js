@@ -215,9 +215,41 @@ async function loadAI(){
     `;
 
     // podsumowanie zaczyna się w wierszu 29
-    for(let row = 29; row <= 36; row++)
+    // podsumowanie zaczyna się w wierszu 29
+for(let row = 29; row <= 36; row++) {
 
-        const player = rows[row]?.[15]?.trim();
+    const player = rows[row]?.[15]?.trim();
+
+    const chancePart1 = rows[row]?.[16]?.replace(/"/g,"")?.trim() || "";
+    const chancePart2 = rows[row]?.[17]?.replace(/"/g,"")?.trim() || "";
+
+    const chance =
+        chancePart2
+        ? `${chancePart1},${chancePart2}`
+        : chancePart1;
+
+    if(
+        player &&
+        player !== "Gracz" &&
+        chance
+    ){
+
+        let medal = "";
+
+        if(row === 30) medal = "🥇";
+        if(row === 31) medal = "🥈";
+        if(row === 32) medal = "🥉";
+
+        html += `
+        <li style="
+            padding:10px 0;
+            border-bottom:1px solid #24324a;
+        ">
+            ${medal} ${player} - <b>${chance}</b>
+        </li>
+        `;
+    }
+}
 
 const chancePart1 = rows[row]?.[16]?.replace(/"/g,"")?.trim() || "";
 const chancePart2 = rows[row]?.[17]?.replace(/"/g,"")?.trim() || "";
