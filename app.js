@@ -252,10 +252,12 @@ for(let row = 29; row <= 36; row++) {
 }
 
 
+    html += `
+        </ul>
     </div>
-    `;
+`;
 
-    document.getElementById("ai-content").innerHTML = html;
+document.getElementById("ai-content").innerHTML = html;
 }
 
 loadRanking();
