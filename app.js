@@ -154,18 +154,15 @@ async function loadTypy(){
 
 async function loadAI(){
 
-    const response = await fetch(aiCSV);
-    const text = await response.text();
-
-    const lines = text.split("\n");
+    const rows = await getCSV(aiCSV);
 
     const models = [
-        "Chat GPT",
-        "Copilot",
-        "Gemini",
-        "Use AI",
-        "Claude Opus",
-        "Preplexity"
+        { name: "Chat GPT", playerCol: 2, chanceCol: 3 },
+        { name: "Copilot", playerCol: 7, chanceCol: 8 },
+        { name: "Gemini", playerCol: 12, chanceCol: 13 },
+        { name: "Use AI", playerCol: 17, chanceCol: 18 },
+        { name: "Claude Opus", playerCol: 22, chanceCol: 23 },
+        { name: "Perplexity", playerCol: 27, chanceCol: 28 }
     ];
 
     let html = `
@@ -176,48 +173,33 @@ async function loadAI(){
 
         html += `
         <div class="ai-card">
-            <h3>🤖 ${model}</h3>
+            <h3>🤖 ${model.name}</h3>
             <ul>
         `;
 
-        lines.forEach(line => {
+        for(let i = 5; i < rows.length; i++){
+
+            const player =
+                rows[i]?.[model.playerCol]?.trim();
+
+            const chance =
+                rows[i]?.[model.chanceCol]?.trim();
 
             if(
-                line.includes("%") &&
-                !line.includes("Średnia") &&
-                !line.includes("Podsumowanie")
+                player &&
+                chance &&
+                chance.includes("%")
             ){
 
-                const parts = line.split(",");
+                html += `
+                <li>${player} - ${chance}</li>
+                `;
 
-                for(let i=0;i<parts.length;i++){
+            } else {
 
-                    const value = parts[i].trim();
-
-                    if(
-                        value &&
-                        value.includes("%") &&
-                        i > 0
-                    ){
-
-                        const player = parts[i-1]?.trim();
-
-                        if(
-                            player &&
-                            player.length > 2 &&
-                            !player.includes("%")
-                        ){
-                            html += `
-                            <li>
-                                ${player} - ${value}
-                            </li>
-                            `;
-                        }
-                    }
-                }
+                break;
             }
-
-        });
+        }
 
         html += `
             </ul>
@@ -227,14 +209,55 @@ async function loadAI(){
 
     html += `
     </div>
-
-    <div class="ai-summary">
-        <h3>📊 Podsumowanie AI</h3>
-        <p>
-        Średnie szanse wszystkich modeli AI
-        </p>
-    </div>
     `;
+
+    const summaryStart = rows.findIndex(row =>
+        row.join(" ").includes("Podsumowanie")
+    );
+
+    if(summaryStart !== -1){
+
+        let summaryHTML = `
+        <div class="ai-summary">
+            <h3>📊 Podsumowanie AI</h3>
+            <ul style="list-style:none;padding:0;margin-top:15px">
+        `;
+
+        let position = 0;
+
+        for(let i = summaryStart + 2; i < rows.length; i++){
+
+            const player = rows[i]?.[13]?.trim();
+            const chance = rows[i]?.[14]?.trim();
+
+            if(!player || !chance) continue;
+
+            position++;
+
+            let medal = "";
+
+            if(position === 1) medal = "🥇";
+            if(position === 2) medal = "🥈";
+            if(position === 3) medal = "🥉";
+
+            summaryHTML += `
+            <li style="
+                padding:10px 0;
+                border-bottom:1px solid #24324a;
+                font-size:18px;
+            ">
+                ${medal} ${player} - <b>${chance}</b>
+            </li>
+            `;
+        }
+
+        summaryHTML += `
+            </ul>
+        </div>
+        `;
+
+        html += summaryHTML;
+    }
 
     document.getElementById("ai-content").innerHTML = html;
 }
