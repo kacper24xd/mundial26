@@ -313,3 +313,13 @@ tr:hover td{
     padding:20px;
     border-radius:15px;
 }
+.ai-info{
+    background:#152238;
+    border-left:4px solid #f4c542;
+    padding:16px 20px;
+    margin-bottom:25px;
+    border-radius:12px;
+    color:#d1d5db;
+    line-height:1.7;
+    font-size:15px;
+}
