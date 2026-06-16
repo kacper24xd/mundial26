@@ -218,9 +218,20 @@ async function loadAI(){
     for(let row = 29; row <= 35; row++){
 
         const player = rows[row]?.[15]?.trim();
-        const chance = rows[row]?.[16]?.trim();
 
-        if(player && chance){
+const chancePart1 = rows[row]?.[16]?.replace(/"/g,"")?.trim() || "";
+const chancePart2 = rows[row]?.[17]?.replace(/"/g,"")?.trim() || "";
+
+const chance =
+    chancePart2
+    ? `${chancePart1},${chancePart2}`
+    : chancePart1;
+
+       if(
+    player &&
+    player !== "Gracz" &&
+    chance
+){
 
             let medal = "";
 
