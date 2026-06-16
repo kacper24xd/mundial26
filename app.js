@@ -154,37 +154,86 @@ async function loadTypy(){
 
 async function loadAI(){
 
-    const rows = await getCSV(aiCSV);
+    const response = await fetch(aiCSV);
+    const text = await response.text();
 
-    const data = rows
-        .map(cleanRow)
-        .filter(r => r.length > 0);
+    const lines = text.split("\n");
+
+    const models = [
+        "Chat GPT",
+        "Copilot",
+        "Gemini",
+        "Use AI",
+        "Claude Opus",
+        "Preplexity"
+    ];
 
     let html = `
-    <table>
-    <tbody>
+    <div class="ai-grid">
     `;
 
-    data.forEach((row,index)=>{
+    models.forEach(model => {
 
-        html += "<tr>";
+        html += `
+        <div class="ai-card">
+            <h3>🤖 ${model}</h3>
+            <ul>
+        `;
 
-        row.forEach(col=>{
+        lines.forEach(line => {
 
-            if(index === 0){
-                html += `<th>${col}</th>`;
-            }else{
-                html += `<td>${col}</td>`;
+            if(
+                line.includes("%") &&
+                !line.includes("Średnia") &&
+                !line.includes("Podsumowanie")
+            ){
+
+                const parts = line.split(",");
+
+                for(let i=0;i<parts.length;i++){
+
+                    const value = parts[i].trim();
+
+                    if(
+                        value &&
+                        value.includes("%") &&
+                        i > 0
+                    ){
+
+                        const player = parts[i-1]?.trim();
+
+                        if(
+                            player &&
+                            player.length > 2 &&
+                            !player.includes("%")
+                        ){
+                            html += `
+                            <li>
+                                ${player} - ${value}
+                            </li>
+                            `;
+                        }
+                    }
+                }
             }
 
         });
 
-        html += "</tr>";
+        html += `
+            </ul>
+        </div>
+        `;
     });
 
     html += `
-    </tbody>
-    </table>
+    </div>
+
+    <div class="ai-summary">
+        <h3>📊 Podsumowanie AI</h3>
+        <p>
+        Średnie szanse wszystkich modeli AI
+        </p>
+    </div>
     `;
 
     document.getElementById("ai-content").innerHTML = html;
