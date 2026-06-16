@@ -157,47 +157,37 @@ async function loadAI(){
     const rows = await getCSV(aiCSV);
 
     const models = [
-        { name: "Chat GPT", playerCol: 2, chanceCol: 3 },
-        { name: "Copilot", playerCol: 7, chanceCol: 8 },
-        { name: "Gemini", playerCol: 12, chanceCol: 13 },
-        { name: "Use AI", playerCol: 17, chanceCol: 18 },
-        { name: "Claude Opus", playerCol: 22, chanceCol: 23 },
-        { name: "Perplexity", playerCol: 27, chanceCol: 28 }
+        "Chat GPT",
+        "Copilot",
+        "Gemini",
+        "Use AI",
+        "Claude Opus",
+        "Perplexity"
     ];
 
-    let html = `
-    <div class="ai-grid">
-    `;
+    let html = '<div class="ai-grid">';
 
-    models.forEach(model => {
+    models.forEach((model,index)=>{
+
+        const playerCol = index * 2;
+        const chanceCol = playerCol + 1;
 
         html += `
         <div class="ai-card">
-            <h3>🤖 ${model.name}</h3>
+            <h3>🤖 ${model}</h3>
             <ul>
         `;
 
-        for(let i = 5; i < rows.length; i++){
+        for(let row=4; row<=10; row++){
 
-            const player =
-                rows[i]?.[model.playerCol]?.trim();
+            const player = rows[row]?.[playerCol]?.trim();
+            const chance = rows[row]?.[chanceCol]?.trim();
 
-            const chance =
-                rows[i]?.[model.chanceCol]?.trim();
-
-            if(
-                player &&
-                chance &&
-                chance.includes("%")
-            ){
+            if(player && chance){
 
                 html += `
                 <li>${player} - ${chance}</li>
                 `;
-
-            } else {
-
-                break;
             }
         }
 
@@ -207,57 +197,40 @@ async function loadAI(){
         `;
     });
 
+    html += '</div>';
+
+    // PODSUMOWANIE
+
     html += `
-    </div>
+    <div class="ai-summary">
+        <h3>📊 Podsumowanie AI</h3>
+        <ul style="list-style:none;padding:0">
     `;
 
-    const summaryStart = rows.findIndex(row =>
-        row.join(" ").includes("Podsumowanie")
-    );
+    const summaryRows = rows.slice(29,36);
 
-    if(summaryStart !== -1){
+    summaryRows.forEach(row=>{
 
-        let summaryHTML = `
-        <div class="ai-summary">
-            <h3>📊 Podsumowanie AI</h3>
-            <ul style="list-style:none;padding:0;margin-top:15px">
-        `;
+        const player = row[0]?.trim();
+        const chance = row[1]?.trim();
 
-        let position = 0;
+        if(player && chance){
 
-        for(let i = summaryStart + 2; i < rows.length; i++){
-
-            const player = rows[i]?.[13]?.trim();
-            const chance = rows[i]?.[14]?.trim();
-
-            if(!player || !chance) continue;
-
-            position++;
-
-            let medal = "";
-
-            if(position === 1) medal = "🥇";
-            if(position === 2) medal = "🥈";
-            if(position === 3) medal = "🥉";
-
-            summaryHTML += `
+            html += `
             <li style="
-                padding:10px 0;
+                padding:8px 0;
                 border-bottom:1px solid #24324a;
-                font-size:18px;
             ">
-                ${medal} ${player} - <b>${chance}</b>
+                ${player} - <b>${chance}</b>
             </li>
             `;
         }
+    });
 
-        summaryHTML += `
-            </ul>
-        </div>
-        `;
-
-        html += summaryHTML;
-    }
+    html += `
+        </ul>
+    </div>
+    `;
 
     document.getElementById("ai-content").innerHTML = html;
 }
