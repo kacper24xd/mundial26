@@ -9,6 +9,9 @@ body{
     background:linear-gradient(180deg,#04101f,#071226,#0a1830);
     color:white;
     min-height:100vh;
+
+    display:flex;
+    flex-direction:column;
 }
 
 /* HEADER */
@@ -351,4 +354,18 @@ tr:hover td{
     100%{
         transform:translateX(-100%);
     }
+}
+/* STOPKA */
+
+.footer{
+    margin-top:auto;
+    padding:20px;
+    text-align:center;
+    color:#9ca3af;
+    border-top:1px solid #24324a;
+    font-size:14px;
+}
+
+.footer strong{
+    color:#f4c542;
 }
