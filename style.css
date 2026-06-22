@@ -323,3 +323,32 @@ tr:hover td{
     line-height:1.7;
     font-size:15px;
 }
+/* PASEK WIADOMOŚCI */
+
+.news-ticker{
+    width:100%;
+    overflow:hidden;
+    background:#0f1d34;
+    border-top:1px solid #f4c542;
+    border-bottom:1px solid #f4c542;
+    padding:12px 0;
+}
+
+.ticker-content{
+    display:inline-block;
+    white-space:nowrap;
+    color:white;
+    font-weight:600;
+    font-size:15px;
+    animation:ticker 25s linear infinite;
+}
+
+@keyframes ticker{
+    0%{
+        transform:translateX(100%);
+    }
+
+    100%{
+        transform:translateX(-100%);
+    }
+}
