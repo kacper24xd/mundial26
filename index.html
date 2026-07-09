@@ -1,9 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Mundial26</title>
 
 <link rel="stylesheet" href="style.css">
@@ -19,8 +20,8 @@
 <div class="news-ticker">
     <div class="ticker-content">
         🔥 WALKA O TYTUŁ MISTRZA!
-        🏆 W grze o pierwsze miejsce pozostały już tylko: Karolina i Dominika
-        ⚔️ Kto wygra?
+        🏆 W grze o pierwsze miejsce pozostały już tylko: Karolina • Dominika
+        ⚔️ Kto wygra Mundial26?
     </div>
 </div>
 
@@ -28,6 +29,8 @@
 <button onclick="showTab('ranking')">Ranking</button>
 <button onclick="showTab('typy')">Typy</button>
 <button onclick="showTab('ai')">AI Predictions</button>
+<button onclick="showTab('winner')">Kto wygra?</button>
+<button onclick="showTab('euro2028')">EURO 2028</button>
 </nav>
 
 <section id="ranking" class="tab">
@@ -45,15 +48,169 @@
 <div id="ai-content">Ładowanie...</div>
 </section>
 
-<footer class="footer">
-    <p>
-        Powered by ChatGPT 🤖 |
-        Projekt i wykonanie:
-        <strong>Studio Repcka</strong>
+<section id="winner" class="tab hidden">
+
+<h2>Kto wygra?</h2>
+
+<div class="vote-container">
+
+    <div class="vote-title">
+        <div class="vote-trophy">🏆</div>
+
+        <h3>KTO WYGRA MUNDIAL26?</h3>
+
+        <p>
+            W walce o pierwsze miejsce pozostały już tylko dwie zawodniczki.
+            Oddaj swój głos!
+        </p>
+    </div>
+
+    <div id="vote-content">
+
+        <div class="vote-players">
+
+            <div class="vote-player">
+
+                <div class="vote-avatar">
+                    👑
+                </div>
+
+                <h3>Karolina</h3>
+
+                <button
+                    class="vote-button"
+                    onclick="vote('Karolina')"
+                >
+                    Głosuję na Karolinę
+                </button>
+
+            </div>
+
+            <div class="vote-vs">
+                ⚔️
+                <span>VS</span>
+            </div>
+
+            <div class="vote-player">
+
+                <div class="vote-avatar">
+                    👑
+                </div>
+
+                <h3>Dominika</h3>
+
+                <button
+                    class="vote-button"
+                    onclick="vote('Dominika')"
+                >
+                    Głosuję na Dominikę
+                </button>
+
+            </div>
+
+        </div>
+
+        <p class="vote-info">
+            Jeden głos na urządzenie.
+        </p>
+
+    </div>
+
+</div>
+
+</section>
+
+<section id="euro2028" class="tab hidden">
+
+<h2>EURO 2028</h2>
+
+<div class="euro-container">
+
+    <div class="euro-icon">
+        ⚽
+    </div>
+
+    <p class="euro-small-title">
+        NADCHODZI 2. EDYCJA GRY
     </p>
+
+    <h3>MUNDIAL26 POWRACA!</h3>
+
+    <div class="euro-tournament">
+        🏆 EURO 2028
+    </div>
+
+    <p class="countdown-title">
+        DO STARTU 2. EDYCJI POZOSTAŁO
+    </p>
+
+    <div class="countdown">
+
+        <div class="countdown-box">
+            <span id="days">0</span>
+            <p>DNI</p>
+        </div>
+
+        <div class="countdown-box">
+            <span id="hours">0</span>
+            <p>GODZ.</p>
+        </div>
+
+        <div class="countdown-box">
+            <span id="minutes">0</span>
+            <p>MIN.</p>
+        </div>
+
+        <div class="countdown-box">
+            <span id="seconds">0</span>
+            <p>SEK.</p>
+        </div>
+
+    </div>
+
+    <p class="euro-date">
+        📅 9 CZERWCA 2028
+    </p>
+
+    <div class="euro-features">
+
+        <div>
+            🔥
+            <span>Nowy turniej</span>
+        </div>
+
+        <div>
+            🎯
+            <span>Nowe typy</span>
+        </div>
+
+        <div>
+            👑
+            <span>Nowa walka o zwycięstwo</span>
+        </div>
+
+    </div>
+
+    <div class="euro-final">
+        DO ZOBACZENIA W 2. EDYCJI!
+    </div>
+
+</div>
+
+</section>
+
+<footer class="footer">
+
+<p>
+Powered by ChatGPT 🤖 |
+Projekt i wykonanie:
+<strong>Studio Repcka</strong>
+</p>
+
 </footer>
 
 <script src="app.js"></script>
 
 </body>
+
 </html>
