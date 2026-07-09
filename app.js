@@ -289,42 +289,75 @@ async function vote(player){
         return;
     }
 
+
     const voteContent =
         document.getElementById("vote-content");
+
 
     if(voteContent){
 
         voteContent.innerHTML = `
             <div class="vote-success">
-                <h3>⏳ Zapisuję Twój głos...</h3>
+
+                <h3>
+                    ⏳ Zapisuję Twój głos...
+                </h3>
+
+                <p>
+                    Proszę czekać.
+                </p>
+
             </div>
         `;
 
     }
 
+
     try{
 
-        await fetch(voteAPI, {
-            method: "POST",
-            mode: "no-cors",
-            headers: {
-                "Content-Type": "text/plain"
-            },
-            body: JSON.stringify({
-                player: player
-            })
-        });
+        const url =
+            voteAPI +
+            "?action=vote" +
+            "&player=" +
+            encodeURIComponent(player) +
+            "&t=" +
+            Date.now();
+
+
+        const response =
+            await fetch(url);
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Błąd API: " + response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if(!data.success){
+
+            throw new Error(
+                data.error ||
+                "Nie udało się zapisać głosu"
+            );
+
+        }
+
 
         localStorage.setItem(
             "mundial26-vote",
             player
         );
 
-        setTimeout(() => {
 
-            showVoteResults(player);
-
-        }, 1000);
+        showVoteResults(player);
 
     }
     catch(error){
@@ -334,15 +367,19 @@ async function vote(player){
             error
         );
 
+
         if(voteContent){
 
             voteContent.innerHTML = `
                 <div class="vote-success">
 
-                    <h3>❌ Nie udało się zapisać głosu</h3>
+                    <h3>
+                        ❌ Nie udało się zapisać głosu
+                    </h3>
 
                     <p>
-                        Spróbuj ponownie za chwilę.
+                        Głos nie został zapisany.
+                        Odśwież stronę i spróbuj ponownie.
                     </p>
 
                 </div>
@@ -353,7 +390,6 @@ async function vote(player){
     }
 
 }
-
 
 async function getVoteResults(){
 
