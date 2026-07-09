@@ -634,3 +634,77 @@ tr:hover td{
         font-size:2.2rem;
     }
 }
+/* ========================= */
+/* WYNIKI GŁOSOWANIA */
+/* ========================= */
+
+.vote-results{
+    max-width:700px;
+    margin:35px auto 20px;
+    text-align:left;
+}
+
+.vote-result{
+    margin-bottom:30px;
+}
+
+.vote-result-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+    font-size:18px;
+}
+
+.vote-result-header strong{
+    color:#f4c542;
+    font-size:24px;
+}
+
+.vote-bar{
+    width:100%;
+    height:24px;
+    background:#071226;
+    border-radius:20px;
+    overflow:hidden;
+    border:1px solid #2b4163;
+}
+
+.vote-bar-fill{
+    height:100%;
+    background:linear-gradient(
+        90deg,
+        #f4c542,
+        #ffd95c
+    );
+    border-radius:20px;
+    transition:width 1s ease;
+}
+
+.vote-result p{
+    margin-top:8px;
+    color:#94a3b8;
+    font-size:14px;
+}
+
+.your-vote{
+    margin-top:15px;
+    font-size:18px;
+}
+
+.your-vote strong{
+    color:#f4c542;
+}
+
+.vote-total{
+    margin-top:30px;
+    padding:15px;
+    background:#071226;
+    border-radius:12px;
+    font-size:18px;
+}
+
+.vote-total strong{
+    color:#f4c542;
+    font-size:22px;
+}
