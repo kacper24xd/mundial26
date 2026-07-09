@@ -270,31 +270,121 @@ setInterval(() => {
     loadAI();
 }, 60000);
 /* ========================= */
-/* GŁOSOWANIE */
+/* GŁOSOWANIE ONLINE */
 /* ========================= */
 
-function vote(player){
+const voteAPI =
+"https://script.google.com/macros/s/AKfycbwBL207uMQU8uNnyeo6WjOvhhx2m5s4uG_zTFYIAt8EQrxW7PdCYFsLbeOvJftWTr_G/exec";
+
+
+async function vote(player){
 
     const existingVote =
         localStorage.getItem("mundial26-vote");
 
     if(existingVote){
 
-        showExistingVote(existingVote);
+        showVoteResults(existingVote);
 
         return;
     }
 
-    localStorage.setItem(
-        "mundial26-vote",
-        player
-    );
+    const voteContent =
+        document.getElementById("vote-content");
 
-    showExistingVote(player);
+    if(voteContent){
+
+        voteContent.innerHTML = `
+            <div class="vote-success">
+                <h3>⏳ Zapisuję Twój głos...</h3>
+            </div>
+        `;
+
+    }
+
+    try{
+
+        await fetch(voteAPI, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "text/plain"
+            },
+            body: JSON.stringify({
+                player: player
+            })
+        });
+
+        localStorage.setItem(
+            "mundial26-vote",
+            player
+        );
+
+        setTimeout(() => {
+
+            showVoteResults(player);
+
+        }, 1000);
+
+    }
+    catch(error){
+
+        console.error(
+            "Błąd głosowania:",
+            error
+        );
+
+        if(voteContent){
+
+            voteContent.innerHTML = `
+                <div class="vote-success">
+
+                    <h3>❌ Nie udało się zapisać głosu</h3>
+
+                    <p>
+                        Spróbuj ponownie za chwilę.
+                    </p>
+
+                </div>
+            `;
+
+        }
+
+    }
+
 }
 
 
-function showExistingVote(player){
+async function getVoteResults(){
+
+    try{
+
+        const response =
+            await fetch(
+                voteAPI + "?t=" + Date.now()
+            );
+
+        const data =
+            await response.json();
+
+        return data;
+
+    }
+    catch(error){
+
+        console.error(
+            "Błąd pobierania wyników:",
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+
+async function showVoteResults(player){
 
     const voteContent =
         document.getElementById("vote-content");
@@ -305,23 +395,163 @@ function showExistingVote(player){
 
     voteContent.innerHTML = `
         <div class="vote-success">
+            <h3>⏳ Pobieram wyniki głosowania...</h3>
+        </div>
+    `;
 
-            <h3>✅ Twój głos został zapisany!</h3>
+    const data =
+        await getVoteResults();
 
-            <p>
-                Głosujesz na:
+    if(!data){
+
+        voteContent.innerHTML = `
+            <div class="vote-success">
+
+                <h3>✅ Twój głos został zapisany!</h3>
+
+                <p>
+                    Głosujesz na:
+                    <strong>${player}</strong>
+                </p>
+
+                <p style="
+                    margin-top:15px;
+                    color:#94a3b8;
+                ">
+                    Nie udało się chwilowo pobrać wyników.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    const karolina =
+        Number(data.karolina) || 0;
+
+    const dominika =
+        Number(data.dominika) || 0;
+
+    const total =
+        karolina + dominika;
+
+    const karolinaPercent =
+        total > 0
+        ? Math.round(
+            (karolina / total) * 100
+        )
+        : 0;
+
+    const dominikaPercent =
+        total > 0
+        ? Math.round(
+            (dominika / total) * 100
+        )
+        : 0;
+
+
+    voteContent.innerHTML = `
+        <div class="vote-success">
+
+            <h3>
+                ✅ Twój głos został zapisany!
+            </h3>
+
+            <p class="your-vote">
+                Twój głos:
                 <strong>${player}</strong>
             </p>
 
+
+            <div class="vote-results">
+
+                <div class="vote-result">
+
+                    <div class="vote-result-header">
+
+                        <span>
+                            👑 Karolina
+                        </span>
+
+                        <strong>
+                            ${karolinaPercent}%
+                        </strong>
+
+                    </div>
+
+                    <div class="vote-bar">
+
+                        <div
+                            class="vote-bar-fill"
+                            style="
+                                width:${karolinaPercent}%;
+                            "
+                        ></div>
+
+                    </div>
+
+                    <p>
+                        ${karolina} głosów
+                    </p>
+
+                </div>
+
+
+                <div class="vote-result">
+
+                    <div class="vote-result-header">
+
+                        <span>
+                            👑 Dominika
+                        </span>
+
+                        <strong>
+                            ${dominikaPercent}%
+                        </strong>
+
+                    </div>
+
+                    <div class="vote-bar">
+
+                        <div
+                            class="vote-bar-fill"
+                            style="
+                                width:${dominikaPercent}%;
+                            "
+                        ></div>
+
+                    </div>
+
+                    <p>
+                        ${dominika} głosów
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="vote-total">
+
+                🗳️ Oddano głosów:
+                <strong>${total}</strong>
+
+            </div>
+
+
             <p style="
-                margin-top:15px;
+                margin-top:20px;
                 color:#94a3b8;
             ">
+
                 Na tym urządzeniu głos został już oddany.
+
             </p>
 
         </div>
     `;
+
 }
 
 
@@ -332,12 +562,11 @@ function checkExistingVote(){
 
     if(existingVote){
 
-        showExistingVote(existingVote);
+        showVoteResults(existingVote);
 
     }
 
 }
-
 
 /* ========================= */
 /* ODLICZANIE EURO 2028 */
