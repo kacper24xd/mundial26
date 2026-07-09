@@ -369,3 +369,268 @@ tr:hover td{
 .footer strong{
     color:#f4c542;
 }
+/* ========================= */
+/* GŁOSOWANIE */
+/* ========================= */
+
+.vote-container{
+    background:linear-gradient(135deg,#101f36,#172d4c);
+    border:1px solid #243b60;
+    border-radius:20px;
+    padding:40px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+.vote-title{
+    margin-bottom:40px;
+}
+
+.vote-trophy{
+    font-size:55px;
+    margin-bottom:10px;
+}
+
+.vote-title h3{
+    color:#f4c542;
+    font-size:2.2rem;
+    margin-bottom:10px;
+}
+
+.vote-title p{
+    color:#cbd5e1;
+    line-height:1.6;
+}
+
+.vote-players{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:60px;
+    flex-wrap:wrap;
+}
+
+.vote-player{
+    background:#152238;
+    border:1px solid #2b4163;
+    border-radius:20px;
+    padding:35px;
+    width:300px;
+    transition:.3s;
+}
+
+.vote-player:hover{
+    transform:translateY(-8px);
+    border-color:#f4c542;
+}
+
+.vote-avatar{
+    font-size:60px;
+    margin-bottom:15px;
+}
+
+.vote-player h3{
+    color:#f4c542;
+    font-size:2rem;
+    margin-bottom:25px;
+}
+
+.vote-button{
+    border:none;
+    background:#f4c542;
+    color:#071226;
+    padding:14px 22px;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.vote-button:hover{
+    transform:scale(1.05);
+    background:#ffd95c;
+}
+
+.vote-vs{
+    font-size:40px;
+    display:flex;
+    flex-direction:column;
+    color:#f4c542;
+}
+
+.vote-vs span{
+    font-size:18px;
+    margin-top:5px;
+}
+
+.vote-info{
+    color:#94a3b8;
+    margin-top:30px;
+    font-size:14px;
+}
+
+.vote-success{
+    background:#152238;
+    border-left:5px solid #f4c542;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+}
+
+.vote-success h3{
+    color:#f4c542;
+    font-size:2rem;
+    margin-bottom:15px;
+}
+
+
+/* ========================= */
+/* EURO 2028 */
+/* ========================= */
+
+.euro-container{
+    background:linear-gradient(135deg,#101f36,#172d4c);
+    border:1px solid #243b60;
+    border-radius:20px;
+    padding:50px 30px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+
+.euro-icon{
+    font-size:65px;
+}
+
+.euro-small-title{
+    color:#94a3b8;
+    font-weight:bold;
+    letter-spacing:2px;
+    margin-top:15px;
+}
+
+.euro-container h3{
+    color:#f4c542;
+    font-size:3rem;
+    margin:15px 0;
+}
+
+.euro-tournament{
+    font-size:2rem;
+    font-weight:bold;
+    margin-bottom:40px;
+}
+
+.countdown-title{
+    color:#cbd5e1;
+    margin-bottom:20px;
+}
+
+.countdown{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.countdown-box{
+    background:#071226;
+    border:1px solid #2b4163;
+    border-radius:15px;
+    width:150px;
+    padding:25px 10px;
+}
+
+.countdown-box span{
+    display:block;
+    color:#f4c542;
+    font-size:3rem;
+    font-weight:bold;
+}
+
+.countdown-box p{
+    color:#94a3b8;
+    margin-top:5px;
+}
+
+.euro-date{
+    color:#f4c542;
+    font-weight:bold;
+    margin:30px 0;
+    font-size:1.2rem;
+}
+
+.euro-features{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-top:30px;
+}
+
+.euro-features div{
+    background:#152238;
+    padding:20px;
+    border-radius:15px;
+    min-width:200px;
+    font-size:28px;
+}
+
+.euro-features span{
+    display:block;
+    font-size:15px;
+    color:#cbd5e1;
+    margin-top:10px;
+}
+
+.euro-final{
+    margin-top:40px;
+    color:#f4c542;
+    font-size:1.5rem;
+    font-weight:bold;
+}
+
+
+/* ========================= */
+/* MOBILE */
+/* ========================= */
+
+@media(max-width:600px){
+
+    .vote-container{
+        padding:25px 15px;
+    }
+
+    .vote-title h3{
+        font-size:1.7rem;
+    }
+
+    .vote-player{
+        width:100%;
+    }
+
+    .vote-vs{
+        width:100%;
+    }
+
+    .euro-container{
+        padding:35px 15px;
+    }
+
+    .euro-container h3{
+        font-size:2rem;
+    }
+
+    .countdown{
+        gap:10px;
+    }
+
+    .countdown-box{
+        width:45%;
+        padding:20px 5px;
+    }
+
+    .countdown-box span{
+        font-size:2.2rem;
+    }
+}
