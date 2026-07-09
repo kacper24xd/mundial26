@@ -269,3 +269,169 @@ setInterval(() => {
     loadTypy();
     loadAI();
 }, 60000);
+/* ========================= */
+/* GŁOSOWANIE */
+/* ========================= */
+
+function vote(player){
+
+    const existingVote =
+        localStorage.getItem("mundial26-vote");
+
+    if(existingVote){
+
+        showExistingVote(existingVote);
+
+        return;
+    }
+
+    localStorage.setItem(
+        "mundial26-vote",
+        player
+    );
+
+    showExistingVote(player);
+}
+
+
+function showExistingVote(player){
+
+    const voteContent =
+        document.getElementById("vote-content");
+
+    if(!voteContent){
+        return;
+    }
+
+    voteContent.innerHTML = `
+        <div class="vote-success">
+
+            <h3>✅ Twój głos został zapisany!</h3>
+
+            <p>
+                Głosujesz na:
+                <strong>${player}</strong>
+            </p>
+
+            <p style="
+                margin-top:15px;
+                color:#94a3b8;
+            ">
+                Na tym urządzeniu głos został już oddany.
+            </p>
+
+        </div>
+    `;
+}
+
+
+function checkExistingVote(){
+
+    const existingVote =
+        localStorage.getItem("mundial26-vote");
+
+    if(existingVote){
+
+        showExistingVote(existingVote);
+
+    }
+
+}
+
+
+/* ========================= */
+/* ODLICZANIE EURO 2028 */
+/* ========================= */
+
+function updateCountdown(){
+
+    const euroStart =
+        new Date("2028-06-09T00:00:00");
+
+    const now =
+        new Date();
+
+    const difference =
+        euroStart - now;
+
+    if(difference <= 0){
+
+        const countdown =
+            document.querySelector(".countdown");
+
+        if(countdown){
+
+            countdown.innerHTML = `
+                <div class="euro-final">
+                    ⚽ EURO 2028 ROZPOCZĘTE!
+                </div>
+            `;
+
+        }
+
+        return;
+    }
+
+    const days =
+        Math.floor(
+            difference / (1000 * 60 * 60 * 24)
+        );
+
+    const hours =
+        Math.floor(
+            (difference / (1000 * 60 * 60)) % 24
+        );
+
+    const minutes =
+        Math.floor(
+            (difference / (1000 * 60)) % 60
+        );
+
+    const seconds =
+        Math.floor(
+            (difference / 1000) % 60
+        );
+
+    const daysElement =
+        document.getElementById("days");
+
+    const hoursElement =
+        document.getElementById("hours");
+
+    const minutesElement =
+        document.getElementById("minutes");
+
+    const secondsElement =
+        document.getElementById("seconds");
+
+
+    if(daysElement){
+        daysElement.textContent = days;
+    }
+
+    if(hoursElement){
+        hoursElement.textContent =
+            String(hours).padStart(2,"0");
+    }
+
+    if(minutesElement){
+        minutesElement.textContent =
+            String(minutes).padStart(2,"0");
+    }
+
+    if(secondsElement){
+        secondsElement.textContent =
+            String(seconds).padStart(2,"0");
+    }
+
+}
+
+
+checkExistingVote();
+
+updateCountdown();
+
+setInterval(
+    updateCountdown,
+    1000
+);
