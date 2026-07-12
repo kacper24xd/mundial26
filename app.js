@@ -700,3 +700,10 @@ setInterval(
     updateCountdown,
     1000
 );
+function closeWinnerModal(){
+
+    document
+        .getElementById("winnerModal")
+        .style.display = "none";
+
+}
