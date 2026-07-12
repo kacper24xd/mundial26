@@ -721,7 +721,11 @@ tr:hover td{
 
     display:flex;
     justify-content:center;
-    align-items:center;
+    align-items:flex-start;
+
+    overflow-y:auto;
+
+    padding:40px 20px;
 
     z-index:99999;
 
@@ -730,7 +734,9 @@ tr:hover td{
 
 .winner-box{
 
-    width:min(700px,90%);
+    width:min(700px,100%);
+
+    margin:auto;
 
     background:#152238;
 
@@ -746,7 +752,9 @@ tr:hover td{
 
     overflow:hidden;
 
-    box-shadow:0 0 60px rgba(255,215,0,.35);
+    box-shadow:
+        0 0 60px rgba(255,215,0,.25),
+        inset 0 0 30px rgba(255,215,0,.08);
 
     animation:popup .5s;
 }
@@ -754,46 +762,42 @@ tr:hover td{
 .winner-box h4{
 
     color:#f4c542;
-
-    margin-bottom:20px;
-
     font-size:22px;
+    margin-bottom:20px;
+    letter-spacing:2px;
+
 }
 
 .winner-box h1{
 
-    font-size:58px;
-
     color:#FFD700;
-
+    font-size:56px;
     margin-bottom:20px;
+
 }
 
 .winner-box h2{
 
-    font-size:64px;
-
     color:white;
-
+    font-size:64px;
     margin-bottom:25px;
+
 }
 
 .winner-text{
 
     font-size:24px;
-
     line-height:1.7;
-
     margin-bottom:20px;
+
 }
 
 .winner-text2{
 
     color:#cbd5e1;
-
     line-height:1.8;
-
     margin-bottom:35px;
+
 }
 
 .hall-of-fame{
@@ -802,13 +806,16 @@ tr:hover td{
 
     border-radius:18px;
 
-    padding:20px;
+    padding:22px;
 
     margin-bottom:35px;
 
     font-size:20px;
 
     line-height:1.8;
+
+    border:1px solid #24324a;
+
 }
 
 .winner-box button{
@@ -821,138 +828,155 @@ tr:hover td{
 
     padding:18px 40px;
 
-    font-size:22px;
-
     border-radius:15px;
 
-    cursor:pointer;
+    font-size:22px;
 
     font-weight:bold;
 
+    cursor:pointer;
+
     transition:.3s;
+
 }
 
 .winner-box button:hover{
 
+    background:#ffdf4a;
+
     transform:scale(1.05);
 
-    background:#ffdf4a;
 }
 
 @keyframes popup{
 
     from{
 
-        transform:scale(.7);
-
         opacity:0;
+        transform:scale(.75);
 
     }
 
     to{
 
+        opacity:1;
         transform:scale(1);
 
-        opacity:1;
-
     }
 
 }
-.winner-modal::before,
-.winner-modal::after{
 
-    content:"🎆";
+/* ---------- ZŁOTE KONFETTI ---------- */
 
-    position:absolute;
-
-    font-size:140px;
-
-    animation:firework 1.8s infinite;
-
-}
-
-.winner-modal::before{
-
-    left:8%;
-
-    top:18%;
-}
-
-.winner-modal::after{
-
-    right:8%;
-
-    top:20%;
-
-    animation-delay:.9s;
-}
-
-@keyframes firework{
-
-    0%{
-
-        transform:scale(.5);
-
-        opacity:0;
-
-    }
-
-    40%{
-
-        transform:scale(1.2);
-
-        opacity:1;
-
-    }
-
-    100%{
-
-        transform:scale(2);
-
-        opacity:0;
-
-    }
-
-}
 .confetti{
 
     position:absolute;
 
     inset:0;
 
+    overflow:hidden;
+
     pointer-events:none;
 
-    overflow:hidden;
 }
 
-.confetti::before{
-
-    content:"🎉 🎊 ✨ 🎉 🎊 ✨ 🎉 🎊 ✨ 🎉";
+.confetti span{
 
     position:absolute;
 
-    left:-10%;
+    width:8px;
+
+    height:16px;
+
+    background:#FFD700;
 
     top:-20px;
 
-    width:120%;
+    animation:fall linear infinite;
 
-    font-size:32px;
-
-    animation:confetti 10s linear infinite;
 }
 
-@keyframes confetti{
+.confetti span:nth-child(2n){
+
+    background:#f4c542;
+
+}
+
+.confetti span:nth-child(3n){
+
+    background:white;
+
+}
+
+@keyframes fall{
 
     from{
 
-        transform:translateY(-40px);
+        transform:
+            translateY(-30px)
+            rotate(0deg);
+
+        opacity:1;
 
     }
 
     to{
 
-        transform:translateY(850px);
+        transform:
+            translateY(900px)
+            rotate(720deg);
+
+        opacity:0;
+
+    }
+
+}
+
+/* ---------- TELEFON ---------- */
+
+@media(max-width:700px){
+
+    .winner-modal{
+
+        padding:20px 10px;
+
+    }
+
+    .winner-box{
+
+        padding:30px 20px;
+
+    }
+
+    .winner-box h1{
+
+        font-size:40px;
+
+    }
+
+    .winner-box h2{
+
+        font-size:48px;
+
+    }
+
+    .winner-text{
+
+        font-size:20px;
+
+    }
+
+    .hall-of-fame{
+
+        font-size:17px;
+
+    }
+
+    .winner-box button{
+
+        width:100%;
+
+        font-size:20px;
 
     }
 
