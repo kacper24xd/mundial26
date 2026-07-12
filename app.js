@@ -707,3 +707,4 @@ function closeWinnerModal(){
         .style.display = "none";
 
 }
+document.getElementById("winnerModal").style.display = "none";
